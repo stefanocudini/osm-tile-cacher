@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>OSM Locale</title>
+<style>
+body {
+	margin:0;
+}
+#map {
+	width:1024px;
+	height:600px;
+}
+#ctrls {
+	position:fixed;
+	top:20px;
+	right:50px;
+	z-index:1000;
+	padding:10px;
+	width:300px;
+	height:50px;
+	border:1px solid #00e;
+	background: #eee;
+	color:#00e;
+	opacity: .60;
+	filter:Alpha(Opacity=60);	
+	-moz-border-radius: .4em;
+	-webkit-border-radius: .4em;
+	border-radius: .4em;		
+}
+#ctrls pre {
+	background: #fff;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="ctrls">
+	<label><input id="ckdown" name="ckdown" type="checkbox" />Force Download</label>
+	<pre></pre>
+</div>
+<script src="/maps/openlayers/OpenLayers.js"></script>
+<script src="/jquery-1.4.4.min.js"></script>
+<script>
+
+$(window).bind('resize', function() {
+	$('#map')
+		.height( $(window).height() )
+		.width( $(window).width() );
+}).trigger('resize');//ridimensiona subito!
+
+$(function() {
+
+	var lon = 12.451196,
+		lat = 42.371573,
+		zoom = 15;
+		
+	var wgs84 = new OpenLayers.Projection("EPSG:4326"),
+		mercator =  new OpenLayers.Projection("EPSG:900913");
+		
+		var map = new OpenLayers.Map('map', {projection: mercator, displayProjection: wgs84	});
+		var mapnik = new OpenLayers.Layer.OSM("TMS Locale", "tmsfake.php?${z}/${x}/${y}.png",{attribution:''});
+		map.addLayer(mapnik);
+		map.setBaseLayer(mapnik);
+		//map.addControl(new OpenLayers.Control.LayerSwitcher());
+		map.addControl(new OpenLayers.Control.PanZoomBar());
+		map.addControl(new OpenLayers.Control.OverviewMap({maximized:true}));
+		map.setCenter( new OpenLayers.LonLat(lon, lat).transform( wgs84, map.getProjectionObject()) );  //centro iniziale
+		map.zoomTo(zoom);
+
+	$('#ctrls').delegate('input','change',function(e) {
+
+		var opts = {setopt:1};
+		
+		opts[ $(e.target).attr('id') ]= $(e.target).is(":checked");
+		
+		$('#ctrls pre').text('caricamento...');
+		$('#ctrls pre').load('tmsfake.php',opts);
+	});
+});
+</script>
+</body>
+</html>
