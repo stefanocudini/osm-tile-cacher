@@ -11,7 +11,7 @@ endif;
 
 $forcedown = isset($_SESSION['ckdown']) ? $_SESSION['ckdown'] : false;
 
-$dircache = '/var/www/maps/osmtms/';
+$dircache = './cache-tiles/';
 $r = trim($_SERVER['QUERY_STRING']);
 $url = "http://tile.openstreetmap.org/$r";
 
