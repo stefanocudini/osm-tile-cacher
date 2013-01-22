@@ -1,4 +1,4 @@
 #!/bin/bash
 
 #elimina tutti i link che puntano a empty.png
-find . -type l -exec rm {} \;
+find . -type l -delete
