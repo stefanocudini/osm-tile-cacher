@@ -18,6 +18,7 @@ a {
 	right:0;
 	left:0;
 	bottom:0;
+	background:#fff;
 }
 #ctrls {
 	position:fixed;
@@ -35,9 +36,6 @@ a {
 	-moz-border-radius: .4em;
 	-webkit-border-radius: .4em;
 	border-radius: .4em;		
-}
-#ctrls pre {
-	background: #fff;
 }
 </style>
 </head>
@@ -60,10 +58,15 @@ $(function() {
 	var zoomStart = 9,
 		centerStart = new L.LatLng(41.794008,12.583884),
 		map = new L.Map('map',{center: centerStart}),
-		osmLayer = new L.TileLayer('./tmsfake.php?{z}/{x}/{y}.png');
+		grayLayer = new L.TileLayer('http://{s}.www.toolserver.org/tiles/bw-mapnik/{z}/{x}/{y}.png'),		
+		osmLayer = new L.TileLayer('./tmsfake.php?{z}/{x}/{y}.png'),
+		cacheLayer = new L.TileLayer('./cache-tiles/{z}/{x}/{y}.png');
 	
 	map.setView(centerStart, zoomStart);	
+	map.addLayer(grayLayer);
 	map.addLayer(osmLayer);
+
+	L.control.layers({"Caching Tiles": osmLayer, "Cached Tiles": cacheLayer}, {},{position:'bottomleft',collapsed:false}).addTo(map);
 
 	$('#ckdown').on('change', function(e) {
 		$('#ctrls pre').text('loading...').load('tmsfake.php',{ setopt: 1, ckdown: $(e.target).is(":checked") });
