@@ -1,27 +1,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>OSM Locale</title>
+<title>OSM Tile Cacher with Leaflet</title>
 	<link rel="stylesheet" href="/js/leaflet/dist/leaflet.css" />
 <style>
 body {
 	margin:0;
+	background:#666;
+	text-align:center
+}
+a {
+	color: #ddd;
 }
 #map {
 	position:absolute;
-	top:0;
+	top:18px;
 	right:0;
 	left:0;
 	bottom:0;
 }
 #ctrls {
 	position:fixed;
-	top:20px;
+	top:22px;
 	right:50px;
 	z-index:1000;
 	padding:10px;
-	width:300px;
-	height:50px;
+	width:160px;
+	height:20px;
 	border:1px solid #00e;
 	background: #eee;
 	color:#00e;
@@ -37,11 +42,16 @@ body {
 </style>
 </head>
 <body>
+
+<a href="https://github.com/stefanocudini/osm-tile-cacher">Osm Tile Cacher</a>
+
 <div id="map"></div>
+
 <div id="ctrls">
-	<label><input id="ckdown" name="ckdown" type="checkbox" />Force Download</label>
+	<label><input id="ckdown" name="ckdown" type="checkbox" />Force Update Tiles</label>
 	<pre></pre>
 </div>
+
 <script src="/js/jquery-1.8.3.min.js"></script>
 <script src="/js/leaflet/dist/leaflet.js"></script>
 <script>
@@ -60,6 +70,6 @@ $(function() {
 	});
 });
 </script>
-<script type="text/javascript" src="/labs.analytics.js"></script>
+<script type="text/javascript" src="/labs-common.js"></script>
 </body>
 </html>
