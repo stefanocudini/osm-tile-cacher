@@ -2,13 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>OSM Locale</title>
+	<link rel="stylesheet" href="/js/leaflet/dist/leaflet.css" />
 <style>
 body {
 	margin:0;
 }
 #map {
-	width:1024px;
-	height:600px;
+	position:absolute;
+	top:0;
+	right:0;
+	left:0;
+	bottom:0;
 }
 #ctrls {
 	position:fixed;
@@ -38,43 +42,21 @@ body {
 	<label><input id="ckdown" name="ckdown" type="checkbox" />Force Download</label>
 	<pre></pre>
 </div>
-<script src="/maps/openlayers/OpenLayers.js"></script>
-<script src="/jquery-1.4.4.min.js"></script>
+<script src="/js/jquery-1.8.3.min.js"></script>
+<script src="/js/leaflet/dist/leaflet.js"></script>
 <script>
-
-$(window).bind('resize', function() {
-	$('#map')
-		.height( $(window).height() )
-		.width( $(window).width() );
-}).trigger('resize');//ridimensiona subito!
-
 $(function() {
 
-	var lon = 12.451196,
-		lat = 42.371573,
-		zoom = 15;
-		
-	var wgs84 = new OpenLayers.Projection("EPSG:4326"),
-		mercator =  new OpenLayers.Projection("EPSG:900913");
-		
-		var map = new OpenLayers.Map('map', {projection: mercator, displayProjection: wgs84	});
-		var mapnik = new OpenLayers.Layer.OSM("TMS Locale", "tmsfake.php?${z}/${x}/${y}.png",{attribution:''});
-		map.addLayer(mapnik);
-		map.setBaseLayer(mapnik);
-		//map.addControl(new OpenLayers.Control.LayerSwitcher());
-		map.addControl(new OpenLayers.Control.PanZoomBar());
-		map.addControl(new OpenLayers.Control.OverviewMap({maximized:true}));
-		map.setCenter( new OpenLayers.LonLat(lon, lat).transform( wgs84, map.getProjectionObject()) );  //centro iniziale
-		map.zoomTo(zoom);
+	var zoomStart = 9,
+		centerStart = new L.LatLng(41.794008,12.583884),
+		map = new L.Map('map',{center: centerStart}),
+		osmLayer = new L.TileLayer('./tmsfake.php?{z}/{x}/{y}.png');
+	
+	map.setView(centerStart, zoomStart);	
+	map.addLayer(osmLayer);
 
-	$('#ctrls').delegate('input','change',function(e) {
-
-		var opts = {setopt:1};
-		
-		opts[ $(e.target).attr('id') ]= $(e.target).is(":checked");
-		
-		$('#ctrls pre').text('caricamento...');
-		$('#ctrls pre').load('tmsfake.php',opts);
+	$('#ckdown').on('change', function(e) {
+		$('#ctrls pre').text('loading...').load('tmsfake.php',{ setopt: 1, ckdown: $(e.target).is(":checked") });
 	});
 });
 </script>
