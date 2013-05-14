@@ -21,21 +21,16 @@ a {
 	background:#fff;
 }
 #ctrls {
-	position:fixed;
-	top:22px;
-	right:50px;
-	z-index:1000;
-	padding:10px;
-	width:160px;
+	padding:6px 0;
+	width:150px;
 	height:20px;
-	border:1px solid #00e;
-	background: #eee;
+	margin:14px;
+	background: #fff;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+	border: 1px solid #888;
 	color:#00e;
 	opacity: .60;
-	filter:Alpha(Opacity=60);	
-	-moz-border-radius: .4em;
-	-webkit-border-radius: .4em;
-	border-radius: .4em;		
+	border-radius: 8px;		
 }
 </style>
 </head>
@@ -45,10 +40,7 @@ a {
 
 <div id="map"></div>
 
-<div id="ctrls">
-	<label><input id="ckdown" name="ckdown" type="checkbox" />Force Update Tiles</label>
-	<pre></pre>
-</div>
+<a href="https://github.com/stefanocudini/osm-tile-cacher"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
 <script src="/js/jquery-1.8.3.min.js"></script>
 <script src="/js/leaflet/dist/leaflet.js"></script>
@@ -65,6 +57,14 @@ $(function() {
 	map.setView(centerStart, zoomStart);	
 	map.addLayer(grayLayer);
 	map.addLayer(osmLayer);
+	
+	map.addControl(L.Util.extend(new L.Control({position:'topleft'}),
+				{onAdd: function(map) {
+					return $('<div id="ctrls">'+
+						'<label><input id="ckdown" type="checkbox" />Force Update Tiles</label>'+
+						'<pre></pre></div>')[0];
+				}
+		}) );
 
 	L.control.layers({"Caching Tiles": osmLayer, "Cached Tiles": cacheLayer}, {},{position:'bottomleft',collapsed:false}).addTo(map);
 
