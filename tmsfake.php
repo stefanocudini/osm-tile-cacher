@@ -21,6 +21,10 @@ $ftile = $dircache.$r;
 
 header("Content-type: image/png");
 
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Cache-Control: no-cache");
+header("Pragma: no-cache");
+
 if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
 	if( !is_dir(dirname($ftile)) )
