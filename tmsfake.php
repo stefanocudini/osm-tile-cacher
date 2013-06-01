@@ -20,7 +20,6 @@ $url = "http://tile.openstreetmap.org/$r";
 $ftile = $dircache.$r;
 
 header("Content-type: image/png");
-
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Cache-Control: no-cache");
 header("Pragma: no-cache");
@@ -29,16 +28,22 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
 	if( !is_dir(dirname($ftile)) )
 		mkdir(dirname($ftile), 0775, true);
-
-	if($p = file_get_contents($url))
+		
+	//Important!
+	//http://wiki.openstreetmap.org/wiki/Tile_usage_policy
+	//Cache Tile downloads locally according to HTTP Expiry Header, alternatively a minimum of 7 days.
+	if( (time() - filemtime($ftile)) >= pow(60,3)*24*7 )
 	{
-		if(is_link($ftile))
-			unlink($ftile);
-		file_put_contents($ftile, $p);
-		chmod($ftile,0775);
+		if($p = file_get_contents($url))
+		{
+			if(is_link($ftile))
+				unlink($ftile);
+			file_put_contents($ftile, $p);
+			chmod($ftile,0775);
+		}
+		else
+			symlink($dircache.'empty.png', $ftile);
 	}
-	else
-		symlink($dircache.'empty.png', $ftile);
 }
 
 readfile($ftile);
