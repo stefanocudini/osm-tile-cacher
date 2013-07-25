@@ -32,7 +32,7 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 	//Important!
 	//http://wiki.openstreetmap.org/wiki/Tile_usage_policy
 	//Cache Tile downloads locally according to HTTP Expiry Header, alternatively a minimum of 7 days.
-	if( (time() - filemtime($ftile)) >= pow(60,3)*24*7 )
+	if( !is_file($ftile) or (time() - filemtime($ftile)) >= pow(60,3)*24*7 )
 	{
 		if($p = file_get_contents($url))
 		{
