@@ -15,14 +15,14 @@ $forcedown = isset($_SESSION['ckdown']) ? $_SESSION['ckdown'] : false;
 $dircache = './cache-tiles/';
 
 $r = trim($_SERVER['QUERY_STRING']);
+if(empty($r))
+{
+	header('HTTP/1.0 404 Not Found');
+    exit(0);
+}
+
 $url = "http://tile.openstreetmap.org/$r";
-
 $ftile = $dircache.$r;
-
-header("Content-type: image/png");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Cache-Control: no-cache");
-header("Pragma: no-cache");
 
 if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
@@ -46,6 +46,10 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 	}
 }
 
+header("Content-type: image/png");
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Cache-Control: no-cache");
+header("Pragma: no-cache");
 readfile($ftile);
 //*/
 ?>
