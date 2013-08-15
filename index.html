@@ -9,12 +9,15 @@ body {
 	background:#666;
 	text-align:center
 }
-a {
-	color: #ddd;
+h3 {
+margin:0
+}
+h3 a {
+color:#ccc;
 }
 #map {
 	position:absolute;
-	top:18px;
+	top:30px;
 	right:0;
 	left:0;
 	bottom:0;
@@ -32,13 +35,29 @@ a {
 	opacity: .60;
 	border-radius: 8px;		
 }
+#copy {
+	position:fixed;
+	z-index:1000;
+	right:140px;
+	color:#000;
+	top:-6px;
+	font-style:italic;
+	font-size:.85em;
+	padding:5px 8px;
+	background: #aaa;
+	border:2px solid #c5cdd4;
+	border-radius:.7em;
+	opacity: 0.8;
+}
 </style>
 </head>
 <body>
 
-<a href="https://github.com/stefanocudini/osm-tile-cacher">Osm Tile Cacher</a>
+<h3><a href="https://github.com/stefanocudini/osm-tile-cacher">Osm Tile Cacher</a></h3>
 
 <div id="map"></div>
+
+<div id="copy"><a href="http://labs.easyblog.it/">Labs</a> &bull; <a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a></div>	
 
 <a href="https://github.com/stefanocudini/osm-tile-cacher"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 
