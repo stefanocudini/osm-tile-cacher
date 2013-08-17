@@ -15,14 +15,15 @@ $forcedown = isset($_SESSION['ckdown']) ? $_SESSION['ckdown'] : false;
 $dircache = './cache-tiles/';
 
 $r = trim($_SERVER['QUERY_STRING']);
-if(empty($r))
+if(!preg_match("#^([0-9]{1,3})/([0-9]{1,3})/([0-9]{1,3}).png$#",$r,$m))
 {
 	header('HTTP/1.0 404 Not Found');
     exit(0);
 }
-
-$url = "http://tile.openstreetmap.org/$r";
-$ftile = $dircache.$r;
+array_shift($m);
+$path = implode('/',$m).'.png';
+$url = "http://tile.openstreetmap.org/".$path;
+$ftile = $dircache.$path;
 
 if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
