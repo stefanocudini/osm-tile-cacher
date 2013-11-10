@@ -28,7 +28,7 @@ $ftile = $dircache.$path;
 if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
 	if( !is_dir(dirname($ftile)) )
-		mkdir(dirname($ftile), 0775, true);
+		@mkdir(dirname($ftile), 0775, true);
 		
 	//Important!
 	//http://wiki.openstreetmap.org/wiki/Tile_usage_policy
@@ -39,8 +39,8 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 		{
 			if(is_link($ftile))
 				unlink($ftile);
-			file_put_contents($ftile, $p);
-			chmod($ftile,0775);
+			@file_put_contents($ftile, $p);
+			@chmod($ftile,0775);
 		}
 		else
 			symlink($dircache.'empty.png', $ftile);
