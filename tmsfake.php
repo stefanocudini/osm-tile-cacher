@@ -1,6 +1,8 @@
 <?
 session_start();
 
+$expiretime = pow(60,3)*24*7;	//1 week
+
 if(isset($_POST['setopt']))://force cache re-generation
 
 	if(isset($_POST['ckdown']))
@@ -29,11 +31,12 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 {
 	if( !is_dir(dirname($ftile)) )
 		@mkdir(dirname($ftile), 0775, true);
-		
+
 	//Important!
 	//http://wiki.openstreetmap.org/wiki/Tile_usage_policy
 	//Cache Tile downloads locally according to HTTP Expiry Header, alternatively a minimum of 7 days.
-	if( !is_file($ftile) or (time() - filemtime($ftile)) >= pow(60,3)*24*7 )
+	//
+	if( !is_file($ftile) or (time() - filemtime($ftile)) >= $expiretime )
 	{
 		if($p = file_get_contents($url))
 		{
@@ -47,10 +50,15 @@ if($forcedown or !is_file($ftile) or filesize($ftile)==0 or is_link($ftile))
 	}
 }
 
-header("Content-type: image/png");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Cache-Control: no-cache");
-header("Pragma: no-cache");
-readfile($ftile);
+if(is_file($ftile))
+{
+	header("Content-type: image/png");
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+	header("Cache-Control: no-cache");
+	header("Pragma: no-cache");
+	readfile($ftile);
+}
+else
+	header('Locaion: '.$url);
 //*/
 ?>
