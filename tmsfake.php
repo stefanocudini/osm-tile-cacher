@@ -17,7 +17,7 @@ $forcedown = isset($_SESSION['ckdown']) ? $_SESSION['ckdown'] : false;
 $dircache = './cache-tiles/';
 
 $r = trim($_SERVER['QUERY_STRING']);
-if(!preg_match("#^([0-9]{1,3})/([0-9]{1,3})/([0-9]{1,3}).png$#",$r,$m))
+if(!preg_match("#^([0-9]+)/([0-9]+)/([0-9]+).png$#",$r,$m))
 {
 	header('HTTP/1.0 404 Not Found');
     exit(0);
