@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 
 $expiretime = pow(60,3)*24*7;	//1 week
@@ -8,6 +8,14 @@ if(isset($_POST['setopt']))://force cache re-generation
 	if(isset($_POST['ckdown']))
 		$_SESSION['ckdown'] = filter_var($_POST['ckdown'], FILTER_VALIDATE_BOOLEAN);
 	echo 'Option Saved';
+	exit(0);
+	
+endif;
+
+if(isset($_GET['getopt']))://force cache re-generation
+	
+	echo json_encode($_SESSION);
+
 	exit(0);
 	
 endif;
